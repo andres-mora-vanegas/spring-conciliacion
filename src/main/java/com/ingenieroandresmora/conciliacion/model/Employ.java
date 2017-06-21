@@ -1,6 +1,7 @@
 package com.ingenieroandresmora.conciliacion.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name="tb_employ")
@@ -39,8 +44,10 @@ public class Employ implements Serializable{
 	@Column(name="emp_pass")
 	private String employPass;
 	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="emp_date")
-	private String employDate;
+	private Date employDate;
 	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
 	@JoinColumn(name="sta_id")
@@ -51,20 +58,19 @@ public class Employ implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}	
-	
 
 	public Employ(String employName, String employLastName, String employIdentification, String employEmail,
-			String employPosition, String employPass) {
+			String employPosition, String employPass, Date employDate, State employState) {
 		super();
 		this.employName = employName;
 		this.employLastName = employLastName;
 		this.employIdentification = employIdentification;
 		this.employEmail = employEmail;
 		this.employPosition = employPosition;
-		this.employPass = employPass;	
+		this.employPass = employPass;
+		this.employDate = employDate;
+		this.employState = employState;
 	}
-
-
 
 	public Long getEmployId() {
 		return employId;
@@ -122,11 +128,11 @@ public class Employ implements Serializable{
 		this.employPass = employPass;
 	}
 
-	public String getEmployDate() {
+	public Date getEmployDate() {
 		return employDate;
 	}
 
-	public void setEmployDate(String employDate) {
+	public void setEmployDate(Date employDate) {
 		this.employDate = employDate;
 	}
 	

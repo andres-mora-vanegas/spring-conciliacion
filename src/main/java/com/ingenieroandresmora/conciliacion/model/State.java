@@ -14,7 +14,7 @@ import javax.persistence.Table;
 public class State implements Serializable {
 
 	@Id
-	@Column(name="emp_id")
+	@Column(name="sta_id")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long stateId;
 	
