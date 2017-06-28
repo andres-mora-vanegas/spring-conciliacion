@@ -1,10 +1,10 @@
-package com.ingenieroandresmora.conciliacion.dao;
+package com.ingenieroandresmora.conciliacion.service;
 
 import java.util.List;
 
 import com.ingenieroandresmora.conciliacion.model.Employ;
 
-public interface EmployDao {
+public interface EmployService {
 
 	void saveEmploy(Employ employ);
 

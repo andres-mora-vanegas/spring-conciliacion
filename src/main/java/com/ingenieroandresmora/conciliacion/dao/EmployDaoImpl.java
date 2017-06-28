@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import com.ingenieroandresmora.conciliacion.model.Employ;
 import com.ingenieroandresmora.conciliacion.model.State;
 
-
 @Repository
 @Transactional
 public class EmployDaoImpl extends AbstractSession implements EmployDao {
@@ -24,7 +23,7 @@ public class EmployDaoImpl extends AbstractSession implements EmployDao {
 	public void deleteEmployById(Long idEmploy) {
 		// TODO Auto-generated method stub
 		Employ employ = findById(idEmploy);
-		if (employ  != null) {
+		if (employ != null) {
 			getSession().delete(employ);
 		}
 	}
@@ -47,38 +46,52 @@ public class EmployDaoImpl extends AbstractSession implements EmployDao {
 
 	@Override
 	public Employ findByEmail(String email) {
-		return (Employ) getSession().createQuery(
-				"from Employ where employEmail = :email")
-				.setParameter("email", email).uniqueResult();
+		return (Employ) getSession().createQuery("from Employ where employEmail = :email").setParameter("email", email)
+				.uniqueResult();
 	}
 
 	@Override
 	public void updatePass(Long idEmploy, String pass) {
-		// TODO Auto-generated method stub
-		
+		String hqlUpdate = "update Employ e set e.employPass = :pass where e.employId = :id";
+		int updatedEntities = getSession().createQuery(hqlUpdate).setParameter("id", idEmploy).setParameter("pass", pass)
+				.executeUpdate();
 	}
 
 	@Override
 	public void updateWithoutPass(Employ employ) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void resetPass(Long idEmploy) {
-		// TODO Auto-generated method stub
-		
+	public void resetPass(Long idEmploy,String oldPass) {		
+		String hqlUpdate = "update Employ e set e.employPass = :oldPass where e.employId = :id";
+		int updatedEntities = getSession().createQuery(hqlUpdate).setParameter("id", idEmploy).setParameter("pass", oldPass)
+				.executeUpdate();
+
 	}
 
 	@Override
 	public Employ findByIdentification(String identification) {
-		// TODO Auto-generated method stub
-		return null;
+		return (Employ) getSession().createQuery("from Employ where employIdentification = :identification").uniqueResult();		
 	}
 
 	@Override
-	public List<Employ> findActiveConciliator() {
-		// TODO Auto-generated method stub
+	public Employ findActiveConciliator() {
+		
+		List<Object[]> objects =getSession().createQuery(
+				"from Employ te join te.employId tem where te.employState =1")
+				.list();
+		if (objects.size() > 0) {
+			for (Object[] objects2 : objects) {
+				for (Object object : objects2) {
+					if (object instanceof Employ) {
+						return (Employ) object;
+					}
+				}
+			}
+		}
+		
 		return null;
 	}
 
@@ -87,7 +100,5 @@ public class EmployDaoImpl extends AbstractSession implements EmployDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 
 }

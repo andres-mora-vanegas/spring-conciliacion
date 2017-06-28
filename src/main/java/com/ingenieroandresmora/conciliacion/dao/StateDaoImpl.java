@@ -48,7 +48,6 @@ public class StateDaoImpl extends AbstractSession implements StateDao {
 
 	@Override
 	public List<State> findByCategory(Long idCategory) {
-		// TODO Auto-generated method stub
 		return  getSession().createQuery(
 				"from State where stateCategory = :idCategory")
 				.setParameter("idCategory", idCategory).list();

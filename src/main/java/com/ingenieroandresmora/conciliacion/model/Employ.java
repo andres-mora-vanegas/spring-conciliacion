@@ -50,7 +50,7 @@ public class Employ implements Serializable{
 	private Date employDate;
 	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
-	@JoinColumn(name="sta_id")
+	@JoinColumn(name="emp_state")
 	private State employState;
 	
 	
