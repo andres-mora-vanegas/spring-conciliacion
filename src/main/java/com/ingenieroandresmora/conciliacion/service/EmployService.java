@@ -26,7 +26,7 @@ public interface EmployService {
 	
 	List<Employ> findAllEmploys();
 	
-	Employ findActiveConciliator();
+	List<Employ> findActiveConciliator();
 	
 	List<Employ> findActive();
 }

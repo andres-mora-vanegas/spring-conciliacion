@@ -1,19 +1,24 @@
 package com.ingenieroandresmora.conciliacion.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+@Entity
+@Table(name="tb_rol")
 public class Rol implements Serializable  {
 
 	@Id
@@ -27,10 +32,10 @@ public class Rol implements Serializable  {
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="rol_date")
-	private String rolDate;
+	private Date rolDate;
 	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
-	@JoinColumn(name="sta_id")
+	@JoinColumn(name="rol_state")
 	private State rolState;
 
 	public Rol() {
@@ -38,7 +43,7 @@ public class Rol implements Serializable  {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Rol(String rolDescript, String rolDate, State rolState) {
+	public Rol(String rolDescript, Date rolDate, State rolState) {
 		super();
 		this.rolDescript = rolDescript;
 		this.rolDate = rolDate;
@@ -61,11 +66,11 @@ public class Rol implements Serializable  {
 		this.rolDescript = rolDescript;
 	}
 
-	public String getRolDate() {
+	public Date getRolDate() {
 		return rolDate;
 	}
 
-	public void setRolDate(String rolDate) {
+	public void setRolDate(Date rolDate) {
 		this.rolDate = rolDate;
 	}
 

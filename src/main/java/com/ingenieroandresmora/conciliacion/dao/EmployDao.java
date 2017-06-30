@@ -26,7 +26,7 @@ public interface EmployDao {
 	
 	List<Employ> findAllEmploys();
 	
-	Employ findActiveConciliator();
+	List<Employ> findActiveConciliator();
 	
 	List<Employ> findActive();
 }

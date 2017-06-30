@@ -1,19 +1,24 @@
 package com.ingenieroandresmora.conciliacion.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+@Entity
+@Table(name="tb_rol_employ")
 public class RolEmploy implements Serializable {
 
 	@Id
@@ -22,20 +27,20 @@ public class RolEmploy implements Serializable {
 	private Long rolEmployId;		
 	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
-	@JoinColumn(name="emp_id")
+	@JoinColumn(name="re_employ_id")
 	private Employ rolEmployEmployId;
 	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
-	@JoinColumn(name="rol_id")
-	private Employ rolEmployRolId;
+	@JoinColumn(name="re_rol_id")
+	private Rol rolEmployRolId;
 	
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="re_date")
-	private String rolEmployDate;	
+	private Date rolEmployDate;	
 	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
-	@JoinColumn(name="sta_id")
+	@JoinColumn(name="re_state")
 	private State rolEmployState;
 
 	public RolEmploy() {
@@ -43,7 +48,7 @@ public class RolEmploy implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public RolEmploy(Employ rolEmployEmployId, Employ rolEmployRolId, State rolEmployState) {
+	public RolEmploy(Employ rolEmployEmployId, Rol rolEmployRolId, State rolEmployState) {
 		super();
 		this.rolEmployEmployId = rolEmployEmployId;
 		this.rolEmployRolId = rolEmployRolId;
@@ -66,19 +71,19 @@ public class RolEmploy implements Serializable {
 		this.rolEmployEmployId = rolEmployEmployId;
 	}
 
-	public Employ getRolEmployRolId() {
+	public Rol getRolEmployRolId() {
 		return rolEmployRolId;
 	}
 
-	public void setRolEmployRolId(Employ rolEmployRolId) {
+	public void setRolEmployRolId(Rol rolEmployRolId) {
 		this.rolEmployRolId = rolEmployRolId;
 	}
 
-	public String getRolEmployDate() {
+	public Date getRolEmployDate() {
 		return rolEmployDate;
 	}
 
-	public void setRolEmployDate(String rolEmployDate) {
+	public void setRolEmployDate(Date rolEmployDate) {
 		this.rolEmployDate = rolEmployDate;
 	}
 

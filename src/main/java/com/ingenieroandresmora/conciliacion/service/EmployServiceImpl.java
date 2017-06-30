@@ -70,7 +70,7 @@ public class EmployServiceImpl implements EmployService {
 	}
 
 	@Override
-	public Employ findActiveConciliator() {
+	public List<Employ> findActiveConciliator() {
 		return _employDao.findActiveConciliator();
 	}
 

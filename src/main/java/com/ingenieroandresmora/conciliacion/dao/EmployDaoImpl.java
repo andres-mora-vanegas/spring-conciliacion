@@ -73,13 +73,13 @@ public class EmployDaoImpl extends AbstractSession implements EmployDao {
 
 	@Override
 	public Employ findByIdentification(String identification) {
-		return (Employ) getSession().createQuery("from Employ where employIdentification = :identification").uniqueResult();		
+		return (Employ) getSession().createQuery("from Employ where employIdentification = :identification").setParameter("identification",identification).uniqueResult();		
 	}
 
 	@Override
-	public Employ findActiveConciliator() {
+	public List<Employ> findActiveConciliator() {
 		
-		List<Object[]> objects =getSession().createQuery(
+		/*List<Object[]> objects =getSession().createQuery(
 				"from Employ te join te.employId tem where te.employState =1")
 				.list();
 		if (objects.size() > 0) {
@@ -92,7 +92,9 @@ public class EmployDaoImpl extends AbstractSession implements EmployDao {
 			}
 		}
 		
-		return null;
+		return null;*/
+		return getSession().createQuery("from Employ te,RolEmploy tre "
+				+ "where te.employId=tre.rolEmployEmployId and tre.rolEmployRolId=3 and te.employState=1").list();
 	}
 
 	@Override
