@@ -99,8 +99,8 @@ public class EmployDaoImpl extends AbstractSession implements EmployDao {
 
 	@Override
 	public List<Employ> findActive() {
-		// TODO Auto-generated method stub
-		return null;
+		return getSession().createQuery("from Employ te "
+				+ "where te.employState=1").list();
 	}
 
 }

@@ -60,7 +60,7 @@ public class Employ implements Serializable{
 	}	
 
 	public Employ(String employName, String employLastName, String employIdentification, String employEmail,
-			String employPosition, String employPass, Date employDate, State employState) {
+			String employPosition, String employPass, Date employDate) {
 		super();
 		this.employName = employName;
 		this.employLastName = employLastName;
@@ -69,7 +69,7 @@ public class Employ implements Serializable{
 		this.employPosition = employPosition;
 		this.employPass = employPass;
 		this.employDate = employDate;
-		this.employState = employState;
+		
 	}
 
 	public Long getEmployId() {
@@ -136,5 +136,12 @@ public class Employ implements Serializable{
 		this.employDate = employDate;
 	}
 	
+	public State getEmployState() {
+		return employState;
+	}
+
+	public void setEmployState(State employState) {
+		this.employState = employState;
+	}
 	
 }
