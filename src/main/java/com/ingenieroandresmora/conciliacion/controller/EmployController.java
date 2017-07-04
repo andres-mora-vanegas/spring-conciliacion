@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ public class EmployController {
 	@Autowired
 	private StateService _stateService;
 
+	@CrossOrigin
 	@RequestMapping(value = "/employ", method = RequestMethod.GET, headers = "Accept=application/json")
 	public ResponseEntity<List<Employ>> getEmploys(
 			@RequestParam(value = "employEmail", required = false) String employEmail,
