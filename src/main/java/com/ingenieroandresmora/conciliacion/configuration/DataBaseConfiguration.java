@@ -29,9 +29,9 @@ public class DataBaseConfiguration {
 	public DataSource dataSource(){
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/bd_conciliacion");
-		dataSource.setUsername("root");
-		dataSource.setPassword("");
+		dataSource.setUrl("jdbc:mysql://us-cdbr-iron-east-03.cleardb.net:3306/heroku_639ed6f4e60e490");
+		dataSource.setUsername("bf7d1c3d31994d");
+		dataSource.setPassword("ffa56d43");
 		
 		return dataSource;
 	}
