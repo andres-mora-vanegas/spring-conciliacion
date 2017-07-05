@@ -21,6 +21,7 @@ import com.ingenieroandresmora.conciliacion.model.State;
 import com.ingenieroandresmora.conciliacion.service.EmployService;
 import com.ingenieroandresmora.conciliacion.service.StateService;
 import com.ingenieroandresmora.conciliacion.util.CustomErrorType;
+import com.ingenieroandresmora.conciliacion.util.FunctionLibrary;
 
 @Controller
 @CrossOrigin
@@ -29,7 +30,7 @@ public class EmployController {
 
 	@Autowired
 	private EmployService _employService;
-	
+
 	@Autowired
 	private StateService _stateService;
 
@@ -38,10 +39,11 @@ public class EmployController {
 	public ResponseEntity<List<Employ>> getEmploys(
 			@RequestParam(value = "employEmail", required = false) String employEmail,
 			@RequestParam(value = "employIdentification", required = false) String employIdentification) {
+
 		List<Employ> employs = new ArrayList<Employ>();
 		if (employEmail != null) {
 			Employ employ = _employService.findByEmail(employEmail);
-			if(employ==null){
+			if (employ == null) {
 				return new ResponseEntity(HttpStatus.NO_CONTENT);
 			}
 			employs.add(employ);
@@ -49,7 +51,7 @@ public class EmployController {
 
 		if (employIdentification != null) {
 			Employ employ = _employService.findByIdentification(employIdentification);
-			if(employs==null){
+			if (employs == null) {
 				return new ResponseEntity(HttpStatus.NO_CONTENT);
 			}
 			employs.add(employ);
@@ -63,60 +65,57 @@ public class EmployController {
 		}
 		return new ResponseEntity<List<Employ>>(employs, HttpStatus.OK);
 	}
-	
+
 	// GET BY ID
-		@RequestMapping(value = "/employ/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-		public ResponseEntity<Employ> getEmployById(@PathVariable("id") Long id) {
-			Employ employ = _employService.findById(id);
-			if (employ == null) {
-				return new ResponseEntity(HttpStatus.NOT_FOUND);
-				// You many decide to return HttpStatus.NOT_FOUND
-			}
-			return new ResponseEntity<Employ>(employ, HttpStatus.OK);
+	@RequestMapping(value = "/employ/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public ResponseEntity<Employ> getEmployById(@PathVariable("id") Long id) {
+		Employ employ = _employService.findById(id);
+		if (employ == null) {
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+			// You many decide to return HttpStatus.NOT_FOUND
 		}
+		return new ResponseEntity<Employ>(employ, HttpStatus.OK);
+	}
 
-		// CREATE
-		@RequestMapping(value = "/employ", method = RequestMethod.POST, headers = "Accept=application/json")
-		public ResponseEntity<?> createEmploy(@RequestBody Employ employ, UriComponentsBuilder ucBuilder) {
-			if (employ.getEmployEmail().equals(null) 
-					|| employ.getEmployIdentification().equals(null)
-					|| employ.getEmployName().equals(null) 
-					|| employ.getEmployLastName().equals(null)
-					|| employ.getEmployPosition().equals(null)) {
-				return new ResponseEntity(new CustomErrorType("one of the data needed is not present"),
-						HttpStatus.CONFLICT);
-			}
-			if (_employService.findByIdentification(employ.getEmployIdentification()) != null) {
-				// logger.error("Unable to create. A User with name {} already
-				// exist", user.getName());
-				return new ResponseEntity(new CustomErrorType("Unable to create. A Employ with name "
-						+ employ.getEmployName() + " " + employ.getEmployLastName() + " already exist."),
-						HttpStatus.CONFLICT);
-			}
-			
-			/*if (employ.getEmployState() == null) {
-				return new ResponseEntity(new CustomErrorType("We nee almost id_state"),
-						HttpStatus.NO_CONTENT);
-			}
-			return new ResponseEntity(new CustomErrorType("maximo"),
+	// CREATE
+	@RequestMapping(value = "/employ", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<?> createEmploy(@RequestBody Employ employ, UriComponentsBuilder ucBuilder) {
+		if (employ.getEmployEmail().equals(null) || employ.getEmployIdentification().equals(null)
+				|| employ.getEmployName().equals(null) || employ.getEmployLastName().equals(null)
+				|| employ.getEmployPosition().equals(null)) {
+			return new ResponseEntity(new CustomErrorType("one of the data needed is not present"),
 					HttpStatus.CONFLICT);
-			*/
-			
-			Integer stateId=2;
-			State stateSaved = _stateService.findById((long) stateId);
-			
-			if(stateSaved == null){
-				return new ResponseEntity(new CustomErrorType("the state was not found"),
-						HttpStatus.NO_CONTENT);
-			}
-			employ.setEmployState(stateSaved);
-			employ.setEmployPass("5b3cb93b616f92c142ffaa95c822bcd6");
-			_employService.saveEmploy(employ);
-
-			HttpHeaders headers = new HttpHeaders();
-			headers.setLocation(ucBuilder.path("/v1/employ/{id}").buildAndExpand(employ.getEmployId()).toUri());
-			return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-			
 		}
+		if (_employService.findByIdentification(employ.getEmployIdentification()) != null) {
+			// logger.error("Unable to create. A User with name {} already
+			// exist", user.getName());
+			return new ResponseEntity(new CustomErrorType("Unable to create. A Employ with name "
+					+ employ.getEmployName() + " " + employ.getEmployLastName() + " already exist."),
+					HttpStatus.CONFLICT);
+		}
+
+		/*
+		 * if (employ.getEmployState() == null) { return new ResponseEntity(new
+		 * CustomErrorType("We nee almost id_state"), HttpStatus.NO_CONTENT); }
+		 * return new ResponseEntity(new CustomErrorType("maximo"),
+		 * HttpStatus.CONFLICT);
+		 */
+
+		Integer stateId = 2;
+		State stateSaved = _stateService.findById((long) stateId);
+
+		if (stateSaved == null) {
+			return new ResponseEntity(new CustomErrorType("the state was not found"), HttpStatus.NO_CONTENT);
+		}
+		employ.setEmployState(stateSaved);
+		FunctionLibrary fl= new FunctionLibrary();
+		employ.setEmployPass(fl.encript(employ.getEmployIdentification()));
+		_employService.saveEmploy(employ);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(ucBuilder.path("/v1/employ/{id}").buildAndExpand(employ.getEmployId()).toUri());
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+
+	}
 
 }
