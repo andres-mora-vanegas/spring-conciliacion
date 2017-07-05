@@ -4,6 +4,9 @@ git add .
 //se guardan los cambios en el repositorio local
 git commit -m "mensaje del commit"
 
+//subir los cambios al repositorio de git remoto
+git push https://github.com/andyman1907/spring-conciliacion.git
+
 //comando para loguearse en heroku
 heroku login
 
