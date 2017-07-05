@@ -119,17 +119,4 @@ public class EmployController {
 			
 		}
 
-	/*
-	 * @RequestMapping(value = "/employ", method = RequestMethod.GET, headers =
-	 * "Accept=application/json") public ResponseEntity<List<Employ>>
-	 * getEmploys(@RequestParam(value = "employEmail", required = false) String
-	 * employEmail,
-	 * 
-	 * @RequestParam(value = "stateCategory", required = false) Long
-	 * stateCategory) { List<Employ> employs = new ArrayList<Employ>(); if
-	 * (stateName == null && stateCategory == null) { employs = (List<Employ>)
-	 * _employService.findActiveConciliator(); if (employs.isEmpty()) { return
-	 * new ResponseEntity(HttpStatus.NOT_FOUND); } } return new
-	 * ResponseEntity<List<Employ>>(employs, HttpStatus.OK); }
-	 */
 }
