@@ -23,6 +23,7 @@ import com.ingenieroandresmora.conciliacion.service.StateService;
 import com.ingenieroandresmora.conciliacion.util.CustomErrorType;
 
 @Controller
+@CrossOrigin
 @RequestMapping(value = "/v1")
 public class EmployController {
 
