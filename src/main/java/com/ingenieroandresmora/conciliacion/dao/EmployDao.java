@@ -22,6 +22,8 @@ public interface EmployDao {
 
 	Employ findByEmail(String email);
 	
+	Employ login(String email,String pass);
+	
 	Employ findByIdentification(String identification);
 	
 	List<Employ> findAllEmploys();

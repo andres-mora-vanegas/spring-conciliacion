@@ -1,0 +1,18 @@
+//agregar los cambios realizados al repositorio
+git add .
+
+//se guardan los cambios en el repositorio local
+git commit -m "mensaje del commit"
+
+//subir los cambios al repositorio de git remoto
+git push https://github.com/andyman1907/spring-conciliacion.git
+
+//comando para loguearse en heroku
+heroku login
+
+//comando para sincronizar el repo local con el de heroku 
+heroku git:remote -a conciliacion-spring
+
+//indicación para actualizar el repositorio en heroku
+git push heroku master
+

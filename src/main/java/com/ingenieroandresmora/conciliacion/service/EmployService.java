@@ -26,6 +26,8 @@ public interface EmployService {
 	
 	List<Employ> findAllEmploys();
 	
+	Employ login(String email,String pass);
+	
 	List<Employ> findActiveConciliator();
 	
 	List<Employ> findActive();
