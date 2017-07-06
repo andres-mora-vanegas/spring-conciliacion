@@ -75,6 +75,14 @@ public class EmployDaoImpl extends AbstractSession implements EmployDao {
 	public Employ findByIdentification(String identification) {
 		return (Employ) getSession().createQuery("from Employ where employIdentification = :identification").setParameter("identification",identification).uniqueResult();		
 	}
+	
+	@Override
+	public Employ login(String email,String pass) {
+		return (Employ) getSession().createQuery("from Employ where employEmail = :email and employPass= :pass")
+				.setParameter("email",email)
+				.setParameter("pass", pass)
+				.uniqueResult();		
+	}
 
 	@Override
 	public List<Employ> findActiveConciliator() {

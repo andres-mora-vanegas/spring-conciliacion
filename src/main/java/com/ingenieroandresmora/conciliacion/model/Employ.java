@@ -53,6 +53,8 @@ public class Employ implements Serializable{
 	@JoinColumn(name="emp_state")
 	private State employState;
 	
+	private Integer employStateId;
+	
 	
 	public Employ() {
 		super();
@@ -60,7 +62,7 @@ public class Employ implements Serializable{
 	}	
 
 	public Employ(String employName, String employLastName, String employIdentification, String employEmail,
-			String employPosition, String employPass, Date employDate) {
+			String employPosition, String employPass, Date employDate,Integer employStateId) {
 		super();
 		this.employName = employName;
 		this.employLastName = employLastName;
@@ -69,6 +71,7 @@ public class Employ implements Serializable{
 		this.employPosition = employPosition;
 		this.employPass = employPass;
 		this.employDate = employDate;
+		this.employStateId = employStateId;
 		
 	}
 
@@ -142,6 +145,14 @@ public class Employ implements Serializable{
 
 	public void setEmployState(State employState) {
 		this.employState = employState;
+	}
+	
+	public Integer getEmployStateId() {
+		return employStateId;
+	}
+
+	public void setEmployStateId(Integer employStateId) {
+		this.employStateId = employStateId;
 	}
 	
 }

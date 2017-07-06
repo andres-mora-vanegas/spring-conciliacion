@@ -34,7 +34,7 @@ public class EmployController {
 	@Autowired
 	private StateService _stateService;
 
-	@CrossOrigin
+	// SHOW USERS BY EMAIL,BY IDENTIFICATION OR ALL
 	@RequestMapping(value = "/employ", method = RequestMethod.GET, headers = "Accept=application/json")
 	public ResponseEntity<List<Employ>> getEmploys(
 			@RequestParam(value = "employEmail", required = false) String employEmail,
@@ -87,28 +87,20 @@ public class EmployController {
 					HttpStatus.CONFLICT);
 		}
 		if (_employService.findByIdentification(employ.getEmployIdentification()) != null) {
-			// logger.error("Unable to create. A User with name {} already
-			// exist", user.getName());
+
 			return new ResponseEntity(new CustomErrorType("Unable to create. A Employ with name "
 					+ employ.getEmployName() + " " + employ.getEmployLastName() + " already exist."),
 					HttpStatus.CONFLICT);
 		}
-
-		/*
-		 * if (employ.getEmployState() == null) { return new ResponseEntity(new
-		 * CustomErrorType("We nee almost id_state"), HttpStatus.NO_CONTENT); }
-		 * return new ResponseEntity(new CustomErrorType("maximo"),
-		 * HttpStatus.CONFLICT);
-		 */
-
 		Integer stateId = 2;
 		State stateSaved = _stateService.findById((long) stateId);
 
 		if (stateSaved == null) {
 			return new ResponseEntity(new CustomErrorType("the state was not found"), HttpStatus.NO_CONTENT);
 		}
+
 		employ.setEmployState(stateSaved);
-		FunctionLibrary fl= new FunctionLibrary();
+		FunctionLibrary fl = new FunctionLibrary();
 		employ.setEmployPass(fl.encript(employ.getEmployIdentification()));
 		_employService.saveEmploy(employ);
 
@@ -116,6 +108,63 @@ public class EmployController {
 		headers.setLocation(ucBuilder.path("/v1/employ/{id}").buildAndExpand(employ.getEmployId()).toUri());
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 
+	}
+
+	// UPDATE
+	@RequestMapping(value = "/employ", method = RequestMethod.PATCH, headers = "Accept=application/json")
+	public ResponseEntity<?> updateEmploy(@RequestBody Employ employ, UriComponentsBuilder ucBuilder) {
+		if (employ.getEmployId() == null || employ.getEmployEmail().equals(null)
+				|| employ.getEmployIdentification().equals(null) || employ.getEmployName().equals(null)
+				|| employ.getEmployLastName().equals(null) || employ.getEmployPosition().equals(null)) {
+			return new ResponseEntity(new CustomErrorType("one of the data needed is not present"),
+					HttpStatus.CONFLICT);
+		}
+		
+		/*if (_employService.findByIdentification(employ.getEmployIdentification()) == null) {
+			return new ResponseEntity(new CustomErrorType("Unable to update. A Employ with name "
+					+ employ.getEmployName() + " " + employ.getEmployLastName() + " already exist."),
+					HttpStatus.CONFLICT);
+		}
+		*/
+		Integer stateId = (Integer) employ.getEmployStateId();
+		State stateSaved = _stateService.findById((long) stateId);
+
+		if (stateSaved == null) {
+			return new ResponseEntity(new CustomErrorType("the state was not found "), HttpStatus.CONFLICT);
+		}
+		else{
+			return new ResponseEntity(new CustomErrorType("the state was found "), HttpStatus.CONFLICT);
+		}
+		
+		//employ.setEmployState(stateSaved);
+		//_employService.updateEmploy(employ);
+		/*
+		FunctionLibrary fl = new FunctionLibrary();
+		employ.setEmployPass(fl.encript(employ.getEmployIdentification()));
+		
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(ucBuilder.path("/v1/employ/{id}").buildAndExpand(employ.getEmployId()).toUri());
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+		*/
+	}
+
+	// LOGIN
+	@RequestMapping(value = "/employLogin", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<?> loginEmploy(@RequestBody Employ employ, UriComponentsBuilder ucBuilder) {
+		if (employ.getEmployEmail().equals(null) || employ.getEmployPass().equals(null)) {
+			return new ResponseEntity(new CustomErrorType("one of the data needed is not present"),
+					HttpStatus.CONFLICT);
+		}
+		FunctionLibrary fl = new FunctionLibrary();
+		String encripted = fl.encript(employ.getEmployPass());
+		String user = employ.getEmployEmail();
+		if (_employService.login(user, encripted) == null) {
+			return new ResponseEntity(new CustomErrorType("Do not find anybody with the data provided "),
+					HttpStatus.CONFLICT);
+		} else {
+			return new ResponseEntity(new CustomErrorType("logued "), HttpStatus.CONFLICT);
+		}
 	}
 
 }

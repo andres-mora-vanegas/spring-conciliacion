@@ -63,6 +63,11 @@ public class EmployServiceImpl implements EmployService {
 	public Employ findByIdentification(String identification) {
 		return _employDao.findByIdentification(identification);
 	}
+	
+	@Override
+	public Employ login(String email,String pass) {
+		return _employDao.login(email, pass);
+	}
 
 	@Override
 	public List<Employ> findAllEmploys() {
