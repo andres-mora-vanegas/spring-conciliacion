@@ -87,7 +87,6 @@ public class EmployController {
 					HttpStatus.CONFLICT);
 		}
 		if (_employService.findByIdentification(employ.getEmployIdentification()) != null) {
-
 			return new ResponseEntity(new CustomErrorType("Unable to create. A Employ with name "
 					+ employ.getEmployName() + " " + employ.getEmployLastName() + " already exist."),
 					HttpStatus.CONFLICT);
@@ -102,10 +101,12 @@ public class EmployController {
 		employ.setEmployState(stateSaved);
 		FunctionLibrary fl = new FunctionLibrary();
 		employ.setEmployPass(fl.encript(employ.getEmployIdentification()));
+
 		_employService.saveEmploy(employ);
 
-		HttpHeaders headers = new HttpHeaders();
+		HttpHeaders headers = new HttpHeaders();		
 		headers.setLocation(ucBuilder.path("/v1/employ/{id}").buildAndExpand(employ.getEmployId()).toUri());
+
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 
 	}
@@ -119,35 +120,53 @@ public class EmployController {
 			return new ResponseEntity(new CustomErrorType("one of the data needed is not present"),
 					HttpStatus.CONFLICT);
 		}
-		
-		/*if (_employService.findByIdentification(employ.getEmployIdentification()) == null) {
-			return new ResponseEntity(new CustomErrorType("Unable to update. A Employ with name "
-					+ employ.getEmployName() + " " + employ.getEmployLastName() + " already exist."),
-					HttpStatus.CONFLICT);
+
+		if (_employService.findByIdentification(employ.getEmployIdentification()) == null) {
+			return new ResponseEntity(new CustomErrorType("The employ was not found "), HttpStatus.CONFLICT);
 		}
-		*/
-		Integer stateId = (Integer) employ.getEmployStateId();
-		State stateSaved = _stateService.findById((long) stateId);
+
+		State stateSaved = _stateService.findById(employ.getEmployState().getStateId());
 
 		if (stateSaved == null) {
 			return new ResponseEntity(new CustomErrorType("the state was not found "), HttpStatus.CONFLICT);
 		}
-		else{
-			return new ResponseEntity(new CustomErrorType("the state was found "), HttpStatus.CONFLICT);
-		}
-		
-		//employ.setEmployState(stateSaved);
-		//_employService.updateEmploy(employ);
-		/*
 		FunctionLibrary fl = new FunctionLibrary();
+		//encriptación de la contraseña
 		employ.setEmployPass(fl.encript(employ.getEmployIdentification()));
-		
+		//se actualiza el usuario
+		_employService.updateEmploy(employ);
 
-		HttpHeaders headers = new HttpHeaders();
+		HttpHeaders headers = new HttpHeaders();		
 		headers.setLocation(ucBuilder.path("/v1/employ/{id}").buildAndExpand(employ.getEmployId()).toUri());
+
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-		*/
 	}
+	
+	// UPDATE ONLY PASS
+		@RequestMapping(value = "/employResetPass", method = RequestMethod.PATCH, headers = "Accept=application/json")
+		public ResponseEntity<?> resetPass(@RequestBody Employ employ, UriComponentsBuilder ucBuilder) {
+			if (employ.getEmployId() == null ) {
+				return new ResponseEntity(new CustomErrorType("there is no info to do the process"),
+						HttpStatus.CONFLICT);
+			}
+			Long employId=employ.getEmployId();
+			Employ employOld =_employService.findById(employId);
+			if (employOld == null) {
+				return new ResponseEntity(new CustomErrorType("The employ was not found "), HttpStatus.CONFLICT);
+			}
+
+			FunctionLibrary fl = new FunctionLibrary();
+			//encriptación de la contraseña
+			String pass=fl.encript(employOld.getEmployIdentification());
+			
+			//se actualiza el usuario
+			_employService.updatePass(employId, pass);
+
+			HttpHeaders headers = new HttpHeaders();		
+			headers.setLocation(ucBuilder.path("/v1/employ/{id}").buildAndExpand(employId).toUri());
+
+			return new ResponseEntity<String>(headers, HttpStatus.OK);
+		}
 
 	// LOGIN
 	@RequestMapping(value = "/employLogin", method = RequestMethod.POST, headers = "Accept=application/json")
