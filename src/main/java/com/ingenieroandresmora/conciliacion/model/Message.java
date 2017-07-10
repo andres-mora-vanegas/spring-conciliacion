@@ -4,49 +4,55 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-
-
-public class Message implements Serializable  {
+@Entity
+@Table(name = "tb_messages")
+public class Message implements Serializable {
 
 	@Id
-	@Column(name="mes_id")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "mes_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long messageId;
-	
-	@Column(name="mes_name")
-	private String messageName;		
-	
-	@Column(name="mes_email")
+
+	@Column(name = "mes_name")
+	private String messageName;
+
+	@Column(name = "mes_email")
 	private String messageEmail;
-	
-	@Column(name="mes_phone")
+
+	@Column(name = "mes_phone")
 	private String messagePhone;
-	
-	@Column(name="mes_message")
+
+	@Column(name = "mes_message")
 	private String messageMessage;
-	
+
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="mes_date")
+	@Column(name = "mes_date")
 	private Date messageDate;
-	
-	@ManyToOne(optional=false, fetch=FetchType.EAGER)
-	@JoinColumn(name="cat_id")
-	private Category messageCategory;
-	
-	@ManyToOne(optional=false, fetch=FetchType.EAGER)
-	@JoinColumn(name="sta_id")
+
+	/*
+	 * @ManyToOne(optional=false, fetch=FetchType.EAGER)
+	 * 
+	 * @JoinColumn(name="mes_category")
+	 */
+	@Column(name = "mes_category")
+	private Long messageCategory;
+
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@JoinColumn(name = "mes_state")
 	private State messageState;
 
 	public Message() {
@@ -55,7 +61,7 @@ public class Message implements Serializable  {
 	}
 
 	public Message(String messageName, String messageEmail, String messagePhone, String messageMessage,
-			Date messageDate, Category messageCategory, State messageState) {
+			Date messageDate, Long messageCategory, State messageState) {
 		super();
 		this.messageName = messageName;
 		this.messageEmail = messageEmail;
@@ -114,12 +120,12 @@ public class Message implements Serializable  {
 		this.messageDate = messageDate;
 	}
 
-	public Category getMessageCateogry() {
+	public Long getMessageCategory() {
 		return messageCategory;
 	}
 
-	public void setMessageCateogry(Category messageCateogry) {
-		this.messageCategory = messageCateogry;
+	public void setMessageCategory(Long messageCategory) {
+		this.messageCategory = messageCategory;
 	}
 
 	public State getMessageState() {
@@ -129,6 +135,4 @@ public class Message implements Serializable  {
 	public void setMessageState(State messageState) {
 		this.messageState = messageState;
 	}
-	
-	
 }

@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(name="tb_client")
+@Table(name="tb_clients")
 public class Client implements Serializable {
 
 	@Id
@@ -47,7 +47,7 @@ public class Client implements Serializable {
 	private Date clientDate;
 	
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
-	@JoinColumn(name="sta_id")
+	@JoinColumn(name="cli_state")
 	private State clientState;
 
 	public Client() {

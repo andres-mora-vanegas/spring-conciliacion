@@ -1,11 +1,12 @@
-package com.ingenieroandresmora.conciliacion.dao;
+package com.ingenieroandresmora.conciliacion.service;
 
 import java.util.List;
 
 import com.ingenieroandresmora.conciliacion.model.Message;
 import com.ingenieroandresmora.conciliacion.model.State;
 
-public interface MessageDao {
+public interface MessageService {
+
 	void saveMessage(Message message);
 
 	void deleteMessageById(Long idMessage);
